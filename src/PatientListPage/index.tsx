@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Container, Table, Button } from "semantic-ui-react";
 
@@ -36,6 +37,15 @@ const PatientListPage: React.FC = () => {
     }
   };
 
+  const setSelectedPatient = (patient: Patient) => {
+    try{
+      dispatch({ type: "SET_PATIENT", payload: patient})
+    } catch(e) {
+      console.error(e.response.data);
+      setError(e.response.data.error);
+    }
+  }
+
   return (
     <div className="App">
       <Container textAlign="center">
@@ -44,7 +54,7 @@ const PatientListPage: React.FC = () => {
       <Table celled>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>name</Table.HeaderCell>
             <Table.HeaderCell>Gender</Table.HeaderCell>
             <Table.HeaderCell>Occupation</Table.HeaderCell>
             <Table.HeaderCell>Health Rating</Table.HeaderCell>
@@ -53,7 +63,7 @@ const PatientListPage: React.FC = () => {
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
             <Table.Row key={patient.id}>
-              <Table.Cell>{patient.name}</Table.Cell>
+              <Table.Cell onClick={() => setSelectedPatient(patient)}><Link to={`/${patient.id}`}>{patient.name}</Link></Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
