@@ -37,14 +37,16 @@ const PatientListPage: React.FC = () => {
     }
   };
 
-  const setSelectedPatient = (patient: Patient) => {
-    try{
-      dispatch({ type: "SET_PATIENT", payload: patient})
-    } catch(e) {
-      console.error(e.response.data);
-      setError(e.response.data.error);
-    }
-  }
+  // const setSelectedPatient = (patient: Patient) => {
+  //   try{
+  //     dispatch({ type: "SET_PATIENT", payload: patient})
+  //   } catch(e) {
+  //     console.error(e.response.data);
+  //     setError(e.response.data.error);
+  //   }
+  // }
+
+  //onClick={() => setSelectedPatient(patient)}
 
   return (
     <div className="App">
@@ -63,7 +65,7 @@ const PatientListPage: React.FC = () => {
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
             <Table.Row key={patient.id}>
-              <Table.Cell onClick={() => setSelectedPatient(patient)}><Link to={`/${patient.id}`}>{patient.name}</Link></Table.Cell>
+              <Table.Cell><Link to={`/${patient.id}`}>{patient.name}</Link></Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
