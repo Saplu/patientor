@@ -3,11 +3,11 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useStateValue } from "../state";
 import { setPatient } from '../state/reducer';
-import { Patient, Entry } from '../types';
+import { Patient, Entry, Diagnosis } from '../types';
 import { apiBaseUrl } from '../constants';
 
 const PatientPage: React.FC = () => {
-  const [{ selectedPatient }, dispatch] = useStateValue();
+  const [{ selectedPatient, diagnosis }, dispatch] = useStateValue();
   const id = useParams<{id: string}>().id;
 
   React.useEffect(() => {
@@ -41,7 +41,12 @@ const PatientPage: React.FC = () => {
       <p>occupation: {selectedPatient.occupation}</p>
       <h3>Entries</h3>
       {selectedPatient.entries.map(e => (
-        <p key={e.id}>{e.date} {e.description} {e.diagnosisCodes?.map(d => (<li key={d.toString()}>{d}</li>))}</p>
+        <p key={e.id}>{e.date} {e.description}
+        {e.diagnosisCodes?.map(d => (
+          <li key={d.toString()}>{d} {' '}
+          {diagnosis.find(di => di.code === d.toString())?.name}
+          </li>
+        ))}</p>
       ))}
     </div>
   )
