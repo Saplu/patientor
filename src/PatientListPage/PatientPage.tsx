@@ -7,7 +7,7 @@ import { Patient } from '../types';
 import { apiBaseUrl } from '../constants';
 
 const PatientPage: React.FC = () => {
-  const [{ selectedPatient, patients }, dispatch] = useStateValue();
+  const [{ selectedPatient }, dispatch] = useStateValue();
   const id = useParams<{id: string}>().id;
 
   React.useEffect(() => {
