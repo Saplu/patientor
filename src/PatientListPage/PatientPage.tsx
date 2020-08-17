@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useStateValue } from "../state";
 import { setPatient } from '../state/reducer';
-import { Patient } from '../types';
+import { Patient, Entry } from '../types';
 import { apiBaseUrl } from '../constants';
 
 const PatientPage: React.FC = () => {
@@ -23,7 +23,7 @@ const PatientPage: React.FC = () => {
       }
     };
     getPatient();
-  }, [dispatch]);
+  }, [dispatch, id, selectedPatient]);
 
   if (!selectedPatient){
     return (
@@ -32,12 +32,17 @@ const PatientPage: React.FC = () => {
       </div>
     )
   }
+
   return (
     <div>
       <h2>{selectedPatient.name}</h2>
       <p>{selectedPatient.gender}</p>
       <p>ssn: {selectedPatient.ssn}</p>
       <p>occupation: {selectedPatient.occupation}</p>
+      <h3>Entries</h3>
+      {selectedPatient.entries.map(e => (
+        <p key={e.id}>{e.date} {e.description} {e.diagnosisCodes?.map(d => (<li key={d.toString()}>{d}</li>))}</p>
+      ))}
     </div>
   )
 }
