@@ -13,9 +13,13 @@ import { HealthCheckEntry } from '../types';
 const PatientPage: React.FC = () => {
   const [{ selectedPatient, diagnoses }, dispatch] = useStateValue();
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [ error, setError ] = React.useState<string | undefined>();
 
   const openModal = (): void => setModalOpen(true);
-  const closeModal = (): void => setModalOpen(false);
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
 
   const id = useParams<{id: string}>().id;
 
@@ -38,7 +42,7 @@ const PatientPage: React.FC = () => {
     try{
       if (!selectedPatient){
         throw new Error('Something weird just happened.');
-      }
+      };
       const { data: newEntry } = await axios.post<HealthCheckEntry>(
         `${apiBaseUrl}/patients/${selectedPatient.id}/entries`,
         values
@@ -47,8 +51,9 @@ const PatientPage: React.FC = () => {
       closeModal();
     } catch(e){
       console.error(e.response.data);
-    }
-  }
+      setError(e.response.data.error);
+    };
+  };
 
   if (!selectedPatient){
     return (
@@ -56,7 +61,7 @@ const PatientPage: React.FC = () => {
         nothing found.
       </div>
     )
-  }
+  };
 
   return (
     <div>
@@ -76,11 +81,12 @@ const PatientPage: React.FC = () => {
       <AddEntryModal
         modalOpen={modalOpen}
         onSubmit={submitNewEntry}
+        error={error}
         onClose={closeModal}
       />
       <Button onClick={() => openModal()}>Add Entry</Button>
     </div>
   )
-}
+};
 
 export default PatientPage

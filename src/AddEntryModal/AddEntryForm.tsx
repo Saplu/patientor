@@ -37,15 +37,19 @@ export const AddHealthCheckEntryForm: React.FC<Props> = ({ onSubmit, onCancel })
       validate={values => {
         const requiredError = 'Field is required';
         const errors: { [field: string]:string} = {};
-        if (!values.specialist) {
+        if (values.specialist.length === 0) {
           errors.specialist = requiredError;
         }
-        if (!values.description) {
+        if (values.description.length === 0) {
           errors.description = requiredError;
         }
-        if (!values.date) {
+        if (values.date.length === 0) {
           errors.date = requiredError;
         }
+        if (!Date.parse(values.date)) {
+          errors.date = 'Check format';
+        }
+        return errors;
       }}
       >
         {({ isValid, dirty, setFieldValue, setFieldTouched }) => {

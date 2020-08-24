@@ -100,7 +100,7 @@ export const setDiagnosisList = (diagnosis: Diagnosis[]) => {
     payload: diagnosis
   };
   return value;
-}
+};
 
 export const addHealthCheckEntry = (entry: HealthCheckEntry) => {
   console.log(entry);
@@ -110,4 +110,4 @@ export const addHealthCheckEntry = (entry: HealthCheckEntry) => {
   };
   console.log(value);
   return value;
-}
+};
