@@ -31,6 +31,11 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3
 }
 
+export type HealthCheckRatingOptions = {
+  value: HealthCheckRating,
+  label: string
+}
+
 interface BaseEntry {
   id: string;
   description: string;
@@ -39,7 +44,7 @@ interface BaseEntry {
   diagnosisCodes?: Array<Diagnosis[]>;
 }
 
-interface HealthCheckEntry extends BaseEntry{
+export interface HealthCheckEntry extends BaseEntry{
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }

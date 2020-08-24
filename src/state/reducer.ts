@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Patient, Diagnosis } from "../types";
+import { Patient, Diagnosis, HealthCheckEntry } from "../types";
 
 export type Action =
   | {
@@ -17,6 +17,10 @@ export type Action =
   | {
     type: "SET_DIAGNOSIS";
     payload: Diagnosis[];
+    }
+  | {
+    type: "ADD_HEALTHCHECKENTRY";
+    payload: HealthCheckEntry;
   };
 
 export const reducer = (state: State, action: Action): State => {
@@ -48,8 +52,19 @@ export const reducer = (state: State, action: Action): State => {
     case "SET_DIAGNOSIS":
       return {
         ...state,
-        diagnosis: action.payload
+        diagnoses: action.payload
       };
+    case "ADD_HEALTHCHECKENTRY":
+      if (state && state.selectedPatient){
+        return {
+          ...state,
+          selectedPatient: {
+            ...state.selectedPatient,
+            entries: state.selectedPatient.entries.concat(action.payload)
+          }
+        }
+      }
+      else throw new Error('Selected patient not present');
     default:
       return state;
   }
@@ -84,5 +99,15 @@ export const setDiagnosisList = (diagnosis: Diagnosis[]) => {
     type: 'SET_DIAGNOSIS',
     payload: diagnosis
   };
+  return value;
+}
+
+export const addHealthCheckEntry = (entry: HealthCheckEntry) => {
+  console.log(entry);
+  const value : Action = {
+    type: 'ADD_HEALTHCHECKENTRY',
+    payload: entry
+  };
+  console.log(value);
   return value;
 }
